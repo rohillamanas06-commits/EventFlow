@@ -46,11 +46,7 @@ const FunnelChart: React.FC<Props> = ({ steps }) => {
               )}
             </div>
           ))}
-          {steps.every((s) => s.count === 0) && (
-            <div style={{ color: "var(--text-muted)", fontSize: 12, textAlign: "center", padding: "12px 0" }}>
-              Fire page_view, signup & purchase events to see the funnel
-            </div>
-          )}
+
         </div>
       </div>
     </div>

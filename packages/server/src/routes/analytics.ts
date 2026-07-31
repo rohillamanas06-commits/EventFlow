@@ -27,6 +27,11 @@ router.get("/all", (_req: Request, res: Response) => {
   res.json(data);
 });
 
+router.delete("/all", (_req: Request, res: Response) => {
+  db.prepare("DELETE FROM events").run();
+  res.json({ success: true });
+});
+
 router.get("/timeseries", (_req: Request, res: Response) => {
   res.json(buildTimeseries());
 });

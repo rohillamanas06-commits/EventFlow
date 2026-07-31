@@ -9,23 +9,10 @@ import FunnelChart from "./components/FunnelChart";
 import LiveFeed from "./components/LiveFeed";
 import EventSimulator from "./components/EventSimulator";
 
-interface Toast { id: number; msg: string }
-let toastCounter = 0;
-
-function useToasts() {
-  const [toasts, setToasts] = useState<Toast[]>([]);
-  const addToast = useCallback((msg: string) => {
-    const id = ++toastCounter;
-    setToasts((t) => [...t, { id, msg }]);
-    setTimeout(() => setToasts((t) => t.filter((x) => x.id !== id)), 2200);
-  }, []);
-  return { toasts, addToast };
-}
 
 const App: React.FC = () => {
   const { data, refresh } = useAnalytics(8_000);
   const [liveEvents, setLiveEvents] = useState<RawEvent[]>([]);
-  const { toasts, addToast } = useToasts();
 
   const handleNewEvent = useCallback((evt: RawEvent) => {
     setLiveEvents((prev) => [evt, ...prev].slice(0, 50));
@@ -33,13 +20,24 @@ const App: React.FC = () => {
 
   const { status } = useWebSocket(handleNewEvent, refresh);
 
+  const initialized = React.useRef(false);
+
   useEffect(() => {
-    if (data.recent.length > 0) {
-      setLiveEvents((prev) =>
-        prev.length === 0 ? data.recent : prev
-      );
+    if (data.recent.length > 0 && !initialized.current) {
+      setLiveEvents(data.recent);
+      initialized.current = true;
     }
   }, [data.recent]);
+
+  const handleClearData = async () => {
+    setLiveEvents([]);
+    try {
+      await fetch("/api/analytics/all", { method: "DELETE" });
+      refresh();
+    } catch (err) {
+      console.error("Failed to clear data:", err);
+    }
+  };
 
   const wsLabel = status === "connected" ? "Live" : status === "connecting" ? "Connecting..." : "Offline";
 
@@ -47,14 +45,13 @@ const App: React.FC = () => {
     <div className="app-shell">
       <header className="header">
         <a className="header__logo" href="/" aria-label="EventFlow home">
-          <div className="header__logo-icon">EF</div>
           EventFlow
         </a>
         <div className="header__meta">
           <div className="ws-badge">
             {wsLabel}
           </div>
-          <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.7)" }}>
             {new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
           </div>
         </div>
@@ -79,7 +76,7 @@ const App: React.FC = () => {
               <span className="card__subtitle">{liveEvents.length} events</span>
             </span>
             <button 
-              onClick={() => setLiveEvents([])} 
+              onClick={handleClearData} 
               aria-label="Clear live events"
               title="Clear feed"
               style={{
@@ -101,15 +98,10 @@ const App: React.FC = () => {
             </button>
           </div>
           <LiveFeed events={liveEvents} />
-          <EventSimulator onEventSent={refresh} onToast={addToast} />
+          <EventSimulator onEventSent={refresh} />
         </aside>
       </main>
 
-      <div className="toast-stack" aria-live="polite">
-        {toasts.map((t) => (
-          <div key={t.id} className="toast">{t.msg}</div>
-        ))}
-      </div>
     </div>
   );
 };

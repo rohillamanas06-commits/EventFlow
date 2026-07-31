@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 
 interface Props {
   onEventSent: () => void;
-  onToast: (msg: string) => void;
 }
 
 const EVENT_TYPES = [
@@ -27,7 +26,7 @@ async function sendEvent(
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
 }
 
-const EventSimulator: React.FC<Props> = ({ onEventSent, onToast }) => {
+const EventSimulator: React.FC<Props> = ({ onEventSent }) => {
   const [userId, setUserId] = useState("user-001");
   const [sessionId, setSessionId] = useState("sess-abc123");
   const [loading, setLoading] = useState<string | null>(null);
@@ -38,9 +37,8 @@ const EventSimulator: React.FC<Props> = ({ onEventSent, onToast }) => {
     try {
       await sendEvent(eventName, userId, sessionId, props);
       onEventSent();
-      onToast(`Success: ${eventName} fired`);
     } catch {
-      onToast(`Failed to send ${eventName}`);
+      console.error(`Failed to send ${eventName}`);
     } finally {
       setLoading(null);
     }
@@ -49,7 +47,6 @@ const EventSimulator: React.FC<Props> = ({ onEventSent, onToast }) => {
   const burst = async () => {
     if (burstRef.current) return;
     burstRef.current = true;
-    onToast("Firing burst of 20 events...");
 
     const events = [
       ...Array(8).fill("page_view"),
@@ -70,7 +67,6 @@ const EventSimulator: React.FC<Props> = ({ onEventSent, onToast }) => {
     }
 
     onEventSent();
-    onToast("Burst complete - 20 events ingested");
     burstRef.current = false;
   };
 

@@ -13,12 +13,12 @@ const CustomTooltip = ({ active, payload }: any) => {
   const d = payload[0].payload as BreakdownItem;
   return (
     <div style={{
-      background: "#1e2736",
-      border: "1px solid rgba(255,255,255,0.1)",
+      background: "var(--surface)",
+      border: "1px solid var(--border)",
       borderRadius: 8,
       padding: "8px 12px",
       fontSize: 12,
-      color: "#e2e8f0",
+      color: "var(--text-primary)",
     }}>
       <div style={{ fontWeight: 600, marginBottom: 2 }}>{d.name}</div>
       <div style={{ color: "#94a3b8" }}>{d.count} events · {d.percentage}%</div>
@@ -62,7 +62,6 @@ const BreakdownChart: React.FC<Props> = ({ data }) => (
             {data.map((item, i) => (
               <div key={item.name} className="breakdown-item">
                 <span className="breakdown-item__name" style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ width: 8, height: 8, borderRadius: "50%", background: COLORS[i % COLORS.length], display: "inline-block", flexShrink: 0 }} />
                   {item.name}
                 </span>
                 <span className="breakdown-item__count">{item.count}</span>

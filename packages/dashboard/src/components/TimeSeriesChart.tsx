@@ -16,7 +16,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   try {
     const d = parseISO(raw);
     if (isValid(d)) timeLabel = format(d, "HH:mm, MMM d");
-  } catch {}
+  } catch { }
   return (
     <div style={{
       background: "#1e2736",
@@ -38,7 +38,7 @@ const TimeSeriesChart: React.FC<Props> = ({ data }) => {
     try {
       const parsed = parseISO(d.bucket);
       if (isValid(parsed)) display = format(parsed, "HH:mm");
-    } catch {}
+    } catch { }
     return { ...d, display };
   });
 
@@ -47,13 +47,13 @@ const TimeSeriesChart: React.FC<Props> = ({ data }) => {
       <div className="card__header">
         <span className="card__title">
           Events Over Time
-          <span className="card__subtitle">Last 60 minutes · per minute</span>
+          <span className="card__subtitle">Last 60 minutes</span>
         </span>
       </div>
       <div className="card__body">
         <div className="chart-wrap">
           {formatted.length === 0 ? (
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", height:"100%", color:"var(--text-muted)", fontSize:13 }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "var(--text-muted)", fontSize: 13 }}>
               No data yet - fire some events!
             </div>
           ) : (
