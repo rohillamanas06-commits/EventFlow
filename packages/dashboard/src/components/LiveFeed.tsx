@@ -24,10 +24,6 @@ const LiveFeed: React.FC<Props> = ({ events }) => (
     ) : (
       events.slice(0, 50).map((evt) => (
         <div key={evt.id} className="feed-item">
-          <div
-            className="feed-dot"
-            style={{ background: EVENT_COLORS[evt.name] ?? "#6366f1" }}
-          />
           <div>
             <div className="feed-item__name">{evt.name}</div>
             <div className="feed-item__meta">

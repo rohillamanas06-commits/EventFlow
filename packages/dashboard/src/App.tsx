@@ -52,7 +52,6 @@ const App: React.FC = () => {
         </a>
         <div className="header__meta">
           <div className="ws-badge">
-            <div className={`ws-dot ${status}`} />
             {wsLabel}
           </div>
           <div style={{ fontSize: 11, color: "var(--text-muted)" }}>
@@ -74,11 +73,32 @@ const App: React.FC = () => {
         </div>
 
         <aside className="sidebar-col">
-          <div className="card__header" style={{ borderBottom: "1px solid var(--border)", padding: "16px 18px 12px" }}>
+          <div className="card__header" style={{ borderBottom: "1px solid var(--border)", padding: "16px 18px 12px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span className="card__title">
               Live Event Feed
               <span className="card__subtitle">{liveEvents.length} events</span>
             </span>
+            <button 
+              onClick={() => setLiveEvents([])} 
+              aria-label="Clear live events"
+              title="Clear feed"
+              style={{
+                background: "transparent",
+                border: "none",
+                cursor: "pointer",
+                color: "var(--text-muted)",
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "4px",
+                transition: "background 0.2s"
+              }}
+              onMouseOver={(e) => e.currentTarget.style.background = "var(--border)"}
+              onMouseOut={(e) => e.currentTarget.style.background = "transparent"}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            </button>
           </div>
           <LiveFeed events={liveEvents} />
           <EventSimulator onEventSent={refresh} onToast={addToast} />

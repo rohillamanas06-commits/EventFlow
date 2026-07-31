@@ -7,10 +7,10 @@ interface Props {
 
 const EVENT_TYPES = [
   { name: "page_view", color: "#6366f1" },
-  { name: "click",     color: "#14b8a6" },
-  { name: "signup",    color: "#f59e0b" },
-  { name: "purchase",  color: "#10b981" },
-  { name: "error",     color: "#f43f5e" },
+  { name: "click", color: "#14b8a6" },
+  { name: "signup", color: "#f59e0b" },
+  { name: "purchase", color: "#10b981" },
+  { name: "error", color: "#f43f5e" },
 ];
 
 async function sendEvent(
@@ -107,14 +107,14 @@ const EventSimulator: React.FC<Props> = ({ onEventSent, onToast }) => {
             disabled={loading !== null}
             style={{ opacity: loading && loading !== et.name ? 0.5 : 1 }}
           >
-            <span className="dot" style={{ background: et.color }} />
+
             {loading === et.name ? "..." : et.name}
           </button>
         ))}
       </div>
 
       <button id="sim-burst" className="sim-burst-btn" onClick={burst}>
-        Burst: 20 Random Events
+        Burst 20 Random Events
       </button>
     </div>
   );
