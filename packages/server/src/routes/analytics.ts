@@ -140,7 +140,7 @@ function buildBreakdown(): BreakdownItem[] {
   }));
 }
 
-const FUNNEL_STEPS = ["page_view", "signup", "purchase"];
+const FUNNEL_STEPS = ["page_view", "click", "signup", "purchase", "error"];
 
 function buildFunnel(): FunnelStep[] {
   const counts: Record<string, number> = {};

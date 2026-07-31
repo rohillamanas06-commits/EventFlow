@@ -13,7 +13,7 @@ A full-stack TypeScript system for collecting events and displaying analytics in
 | Real-time | WebSocket (ws) |
 | Frontend | React 18 · Vite · TypeScript |
 | Charts | Recharts |
-| Styling | Vanilla CSS (dark mode) |
+| Styling | Vanilla CSS (light mode) |
 | Monorepo | npm workspaces |
 
 ---
@@ -112,10 +112,11 @@ Content-Type: application/json
 | Endpoint | Description |
 |----------|-------------|
 | `GET /api/analytics/all` | All analytics in one request (dashboard initial load) |
+| `DELETE /api/analytics/all` | Deletes all events from the database |
 | `GET /api/analytics/overview` | Alias for all |
 | `GET /api/analytics/timeseries` | Events per minute (last 60 min) |
 | `GET /api/analytics/breakdown` | Event counts by type |
-| `GET /api/analytics/funnel` | Conversion funnel: page_view → signup → purchase |
+| `GET /api/analytics/funnel` | Conversion funnel: page_view → click → signup → purchase → error |
 | `GET /api/analytics/recent` | Latest 50 raw events |
 
 ### WebSocket
@@ -134,7 +135,7 @@ Connect to `ws://localhost:4000/ws` (proxied via Vite to `/ws` in dev).
 
 - **KPI Cards** — Total events, unique users, sessions, events/min
 - **Time Series Area Chart** — Events per minute over last 60 minutes
-- **Conversion Funnel** — page_view → signup → purchase with drop-off rates
+- **Conversion Funnel** — page_view → click → signup → purchase → error with drop-off rates
 - **Event Breakdown** — Donut chart + bar list of events by type
 - **Live Event Feed** — Real-time scrolling feed via WebSocket
 - **Event Simulator** — Fire individual events or a 20-event burst with configurable user/session IDs
